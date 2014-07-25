@@ -1,0 +1,4 @@
+# These are specific configuration settings required for travis-ci
+language: ruby
+rvm:
+  - 1.9.3
