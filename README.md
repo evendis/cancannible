@@ -30,15 +30,15 @@ For example, this is a simple scheme using Redis:
 
     Cancannible.setup do |config|
 
-      # Return an Ability object for +user+ or nil if not found
-      config.get_cached_abilities = proc{|user|
-        key = "user:#{user.id}:abilities"
+      # Return an Ability object for +grantee+ or nil if not found
+      config.get_cached_abilities = proc{|grantee|
+        key = "user:#{grantee.id}:abilities"
         Marshal.load(@redis.get(key))
       }
 
-      # Command: put the +ability+ object for +user+ in the cache storage
-      config.store_cached_abilities = proc{|user,ability|
-        key = "user:#{user.id}:abilities"
+      # Command: put the +ability+ object for +grantee+ in the cache storage
+      config.store_cached_abilities = proc{|grantee,ability|
+        key = "user:#{grantee.id}:abilities"
         @redis.set(key, Marshal.dump(ability))
       }
 
