@@ -54,11 +54,11 @@ module Cancannible
   # Set +refresh+ to true to force a reload of permissions.
   def abilities(refresh = false)
     @abilities = nil if refresh
-    @abilities ||= if defined?(Ability)
-      unless Ability.included_modules.include?(Cancannible::AbilityPreloadAdapter)
-        Ability.send :include, Cancannible::AbilityPreloadAdapter
+    @abilities ||= if ability_class = ('Ability'.constantize rescue nil)
+      unless ability_class.included_modules.include?(Cancannible::AbilityPreloadAdapter)
+        ability_class.send :include, Cancannible::AbilityPreloadAdapter
       end
-      Ability.new(self)
+      ability_class.new(self)
     end
   end
 
