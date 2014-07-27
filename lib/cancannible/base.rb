@@ -53,13 +53,22 @@ module Cancannible
   # Returns the Ability set for the owner.
   # Set +refresh+ to true to force a reload of permissions.
   def abilities(refresh = false)
-    @abilities = nil if refresh
+    @abilities = if refresh
+      nil
+    elsif get_cached_abilities.respond_to?(:call)
+      get_cached_abilities.call(self)
+    end
+    return @abilities if @abilities
+
     @abilities ||= if ability_class = ('Ability'.constantize rescue nil)
       unless ability_class.included_modules.include?(Cancannible::AbilityPreloadAdapter)
         ability_class.send :include, Cancannible::AbilityPreloadAdapter
       end
       ability_class.new(self)
     end
+
+    store_cached_abilities.call(self,@abilities) if store_cached_abilities.respond_to?(:call)
+    @abilities
   end
 
   def preload_abilities(cancan_ability_object)

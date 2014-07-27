@@ -19,13 +19,36 @@ Or install it yourself as:
 
     $ gem install cancannible
 
-## Usage
+## Configuring cached abilities storage
 
-TODO: Write usage instructions here
+Cancannible does not implement any specific storage mechanism - that is up to you to provide if you wish.
+
+Cached abilities storage is enabled by setting the `get_cached_abilities` and `store_cached_abilities` hooks with
+the appropriate implementation for your caching infrastructure.
+
+For example, this is a simple scheme using Redis:
+
+    Cancannible.setup do |config|
+
+      # Return an Ability object for +user+ or nil if not found
+      config.get_cached_abilities = proc{|user|
+        key = "user:#{user.id}:abilities"
+        Marshal.load(@redis.get(key))
+      }
+
+      # Command: put the +ability+ object for +user+ in the cache storage
+      config.store_cached_abilities = proc{|user,ability|
+        key = "user:#{user.id}:abilities"
+        @redis.set(key, Marshal.dump(ability))
+      }
+
+    end
+
+
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/cancannible/fork )
+1. Fork it ( https://github.com/evendis/cancannible/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
