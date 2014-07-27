@@ -1,4 +1,5 @@
 # Cancannible
+[![Build Status](https://travis-ci.org/evendis/cancannible.svg?branch=master)](https://travis-ci.org/evendis/cancannible)
 
 CanCan RBAC support with permissions inheritance and database storage
 
