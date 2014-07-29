@@ -146,6 +146,8 @@ module Cancannible
           refinements = Cancannible.refinements.each_with_object([]) do |refinement,memo|
             refinement_attributes = refinement.dup
 
+            allow_nil = !!(refinement_attributes.delete(:allow_nil))
+
             refinement_if_condition = refinement_attributes.delete(:if)
             next if refinement_if_condition.respond_to?(:call) && !refinement_if_condition.call(self,model_resource)
 
@@ -161,7 +163,13 @@ module Cancannible
             restriction = {}
             refinement_attributes.each do |key,value|
               if value.is_a?(Symbol)
-                restriction[key] = self.send(value) if self.respond_to?(value)
+                if self.respond_to?(value)
+                  restriction[key] = if allow_nil
+                    Array(self.send(value)) + [nil]
+                  else
+                    self.send(value)
+                  end
+                end
               else
                 restriction[key] = value
               end

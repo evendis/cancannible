@@ -25,6 +25,35 @@ describe Cancannible do
         let(:category_id) { 3 }
         it { should be_truthy }
       end
+      context "with resource in nil scope" do
+        let(:category_id) { nil }
+        it { should be_falsey }
+      end
+      context "with resource not in scope" do
+        let(:category_id) { 2 }
+        it { should be_falsey }
+      end
+    end
+
+    context "with custom attribute association restriction and allow_nil" do
+      let(:resource_class) { Widget }
+      before do
+        Cancannible.setup do |config|
+          config.refine_access category_id: :category_ids, allow_nil: true
+        end
+        allow(grantee).to receive(:category_ids).and_return([1,3])
+        grantee.can(ability,resource_class)
+      end
+      let!(:resource) { resource_class.create(category_id: category_id) }
+      subject { grantee.can?(ability,resource) }
+      context "with resource within scope" do
+        let(:category_id) { 3 }
+        it { should be_truthy }
+      end
+      context "with resource in nil scope" do
+        let(:category_id) { nil }
+        it { should be_truthy }
+      end
       context "with resource not in scope" do
         let(:category_id) { 2 }
         it { should be_falsey }
