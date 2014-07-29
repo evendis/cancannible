@@ -1,9 +1,24 @@
 # Cancannible
 [![Build Status](https://travis-ci.org/evendis/cancannible.svg?branch=master)](https://travis-ci.org/evendis/cancannible)
 
-CanCan RBAC support with permissions inheritance and database storage
+Cancannible is a gem that extends CanCan with a range of capabilities:
+* database-persisted permissions
+* export CanCan methods to the model layer (so that permissions can be applied in model methods, and easily set in a test case)
+* permissions inheritance (so that, for example, a User can inherit permissions from Roles and/or Groups)
+* caching of abilities (so that they don't need to be recalculated on each web request)
+* general-purpose access refinements (so that, for example, CanCan will automatically enforce multi-tenant or other security restrictions)
 
-TODO: wip refactoring to a new gem structure
+## Limitations
+Cancannible's origin was in a web application that's been in production for over 3 years.
+This gem is an initial refactoring as a separate component. It continues to be used in production, but
+there are some limitations and constraints that will ideally be removed or changed over time:
+
+* It only supports ActiveRecord for permissions storage (specifically, it has been tested with PostgreSQL and SQLite)
+* It currently assumes permissions are stored in a Permission model with a specific structure
+* It works with the [CanCan](https://github.com/ryanb/cancan) gem. It has not yet been tested with the new [CanCanCan](https://github.com/CanCanCommunity/cancancan) gem.
+* It assumes and is only tested with Rails 3.2. Not yet with Rails 4.
+* It assumes your CanCan rules are setup with the default `Ability` class
+
 
 ## Installation
 
@@ -18,6 +33,22 @@ And then execute:
 Or install it yourself as:
 
     $ gem install cancannible
+
+## Configuration
+
+A generator is provided to create:
+* a default initialization template
+* a Permission model and migration
+
+After installing the gem, run the generator:
+
+    $ rails generate cancannible:install
+
+## The Cancannible initialization file
+
+See the initialization file template for specific instructions. Use the initialization file to configure:
+* abilities caching
+* general-purpose access refinements
 
 ## Configuring cached abilities storage
 
@@ -43,7 +74,6 @@ For example, this is a simple scheme using Redis:
       }
 
     end
-
 
 
 ## Contributing
