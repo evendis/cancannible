@@ -217,6 +217,34 @@ describe Cancannible do
       end
     end
 
+    context "with stage 2 restriction" do
+      let(:resource_class) { Widget }
+      before do
+        Cancannible.setup do |config|
+          config.refine_access category_id: :category_ids
+          config.refine_access name: 'Test', stage: 2
+        end
+        allow(grantee).to receive(:category_ids).and_return([1,3])
+        grantee.can(ability,resource_class)
+      end
+      let!(:resource) { resource_class.create(category_id: category_id, name: name) }
+      subject { grantee.can?(ability,resource) }
+      context "with resource within scope" do
+        let(:name) { 'Test' }
+        let(:category_id) { 3 }
+        it { should be_truthy }
+      end
+      context "with resource not in scope (excluded by attribute association)" do
+        let(:name) { 'Test' }
+        let(:category_id) { 2 }
+        it { should be_falsey }
+      end
+      context "with resource not in scope (excluded by stage 2 refinement)" do
+        let(:name) { 'Not Test' }
+        let(:category_id) { 3 }
+        it { should be_falsey }
+      end
+    end
 
   end
 

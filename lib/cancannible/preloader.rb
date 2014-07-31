@@ -51,8 +51,11 @@ class Cancannible::Preloader
             # apply generic unrestricted permission to the class
             cancan_ability_object.send( action, ability, resource_type )
           else
+            secondary_refinements = resolve_resource_refinements(ability,model_resource,2).presence || [{}]
             refinements.each do |refinement|
-              cancan_ability_object.send( action,  ability, resource_type, refinement)
+              secondary_refinements.each do |secondary_refinement|
+                cancan_ability_object.send( action,  ability, resource_type, refinement.merge(secondary_refinement))
+              end
             end
           end
 
@@ -73,8 +76,8 @@ class Cancannible::Preloader
     [resource_type,model_resource]
   end
 
-  def resolve_resource_refinements(ability,model_resource)
-    Cancannible.refinements.each_with_object([]) do |refinement,memo|
+  def resolve_resource_refinements(ability,model_resource,stage=1)
+    Array(Cancannible.refinements[stage-1]).each_with_object([]) do |refinement,memo|
       refinement_attributes = refinement.dup
 
       allow_nil = !!(refinement_attributes.delete(:allow_nil))

@@ -20,7 +20,9 @@ module Cancannible
   reset!
 
   def self.refine_access(refinement={})
-    self.refinements << refinement
+    stage = (refinement.delete(:stage) || 1) - 1
+    self.refinements[stage] ||= []
+    self.refinements[stage] << refinement
   end
 
 end

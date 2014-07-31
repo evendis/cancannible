@@ -94,4 +94,10 @@ Cancannible.setup do |config|
   # and `model_resource` is an example record (unsaved) of the kind of resource that the rule is being applied to.
 
 
+  # Multi-stage refinement syntax example:
+  #   config.refine_access customer_id: :accessible_customer_ids, stage: 2
+  #
+  # By default, access refinements are "stage 1" i.e. applied directly to the permissions being loaded.
+  # By specifying stage 2, this refinement is applied on top of all stage 1 refinements (if possible / applicable)
+
 end
