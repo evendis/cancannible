@@ -27,23 +27,14 @@ class Cancannible::Preloader
       ability = permission.ability.to_sym
       action = permission.asserted ? :can : :cannot
 
-      if resource_type = permission.resource_type
-        begin
-          resource_type = resource_type==resource_type.downcase ? resource_type.to_sym : resource_type.constantize
-          model_resource = resource_type.respond_to?(:new) ? resource_type.new : resource_type
-        rescue
-          model_resource = nil
-        end
-      end
+      resource_type,model_resource = resolve_resource_type(permission.resource_type)
 
       if !resource_type || resource_type.is_a?(Symbol)
-        # nil or symbolic resource types:
-        # apply generic unrestricted permission to the resource_type
+        # nil or symbolic resource types: apply generic unrestricted permission to the resource_type
         cancan_ability_object.send( action,  ability, resource_type )
         next
       else
-        # model-based resource types:
-        # skip if we cannot get a model instance
+        # model-based resource types: skip if we cannot get a model instance
         next unless model_resource
       end
 
@@ -54,39 +45,7 @@ class Cancannible::Preloader
           cancan_ability_object.send( action, ability, resource_type )
         else
 
-          refinements = Cancannible.refinements.each_with_object([]) do |refinement,memo|
-            refinement_attributes = refinement.dup
-
-            allow_nil = !!(refinement_attributes.delete(:allow_nil))
-
-            refinement_if_condition = refinement_attributes.delete(:if)
-            next if refinement_if_condition.respond_to?(:call) && !refinement_if_condition.call(grantee,model_resource)
-
-            refinement_scope = Array(refinement_attributes.delete(:scope))
-            next if refinement_scope.present? &&  !refinement_scope.include?(ability)
-
-            refinement_except = Array(refinement_attributes.delete(:except))
-            next if refinement_except.present? &&  refinement_except.include?(ability)
-
-            refinement_attribute_names = refinement_attributes.keys.map{|k| "#{k}" }
-            next unless (refinement_attribute_names - model_resource.attribute_names).empty?
-
-            restriction = {}
-            refinement_attributes.each do |key,value|
-              if value.is_a?(Symbol)
-                if grantee.respond_to?(value)
-                  restriction[key] = if allow_nil
-                    Array(grantee.send(value)) + [nil]
-                  else
-                    grantee.send(value)
-                  end
-                end
-              else
-                restriction[key] = value
-              end
-            end
-            memo.push(restriction) if restriction.present?
-          end
+          refinements = resolve_resource_refinements(ability,model_resource)
 
           if refinements.empty?
             # apply generic unrestricted permission to the class
@@ -102,6 +61,51 @@ class Cancannible::Preloader
       elsif resource_type.find_by_id(permission.resource_id)
         cancan_ability_object.send( action,  ability, resource_type, id: permission.resource_id)
       end
+
+    end
+  end
+
+  def resolve_resource_type(given_resource_type)
+    model_resource = nil
+    resource_type = given_resource_type
+    resource_type = resource_type==resource_type.downcase ? resource_type.to_sym : resource_type.constantize rescue nil
+    model_resource = resource_type.respond_to?(:new) ? resource_type.new : resource_type rescue nil
+    [resource_type,model_resource]
+  end
+
+  def resolve_resource_refinements(ability,model_resource)
+    Cancannible.refinements.each_with_object([]) do |refinement,memo|
+      refinement_attributes = refinement.dup
+
+      allow_nil = !!(refinement_attributes.delete(:allow_nil))
+
+      refinement_if_condition = refinement_attributes.delete(:if)
+      next if refinement_if_condition.respond_to?(:call) && !refinement_if_condition.call(grantee,model_resource)
+
+      refinement_scope = Array(refinement_attributes.delete(:scope))
+      next if refinement_scope.present? &&  !refinement_scope.include?(ability)
+
+      refinement_except = Array(refinement_attributes.delete(:except))
+      next if refinement_except.present? &&  refinement_except.include?(ability)
+
+      refinement_attribute_names = refinement_attributes.keys.map{|k| "#{k}" }
+      next unless (refinement_attribute_names - model_resource.attribute_names).empty?
+
+      restriction = {}
+      refinement_attributes.each do |key,value|
+        if value.is_a?(Symbol)
+          if grantee.respond_to?(value)
+            restriction[key] = if allow_nil
+              Array(grantee.send(value)) + [nil]
+            else
+              grantee.send(value)
+            end
+          end
+        else
+          restriction[key] = value
+        end
+      end
+      memo.push(restriction) if restriction.present?
     end
   end
 
