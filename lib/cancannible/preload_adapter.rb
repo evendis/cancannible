@@ -1,4 +1,4 @@
-module Cancannible::AbilityPreloadAdapter
+module Cancannible::PreloadAdapter
   extend ActiveSupport::Concern
 
   included do
@@ -6,7 +6,7 @@ module Cancannible::AbilityPreloadAdapter
     # Tap Ability.new to first preload permissions via Cancannible
     alias_method :cancan_initialize, :initialize
     def initialize(user)
-      user.preload_abilities(self) if user.respond_to? :preload_abilities
+      Cancannible::Preloader.preload_abilities!(user,self)
       cancan_initialize(user)
     end
 

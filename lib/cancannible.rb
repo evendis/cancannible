@@ -4,5 +4,6 @@ require 'cancan'
 
 require "cancannible/version"
 require "cancannible/config"
-require "cancannible/ability_preload_adapter"
+require "cancannible/preload_adapter"
+require "cancannible/preloader"
 require "cancannible/grantee"
