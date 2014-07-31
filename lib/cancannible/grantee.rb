@@ -1,4 +1,4 @@
-module Cancannible
+module Cancannible::Grantee
   extend ActiveSupport::Concern
 
   included do
@@ -45,9 +45,12 @@ module Cancannible
   end
 
   module ClassMethods
+
+    # Command: configures the set of associations (array of symbols) from which permissions should be inherited
     def inherit_permissions_from(*relations)
       self.inheritable_permissions = relations
     end
+
   end
 
   # Returns the Ability set for the owner.
@@ -55,8 +58,8 @@ module Cancannible
   def abilities(refresh = false)
     @abilities = if refresh
       nil
-    elsif get_cached_abilities.respond_to?(:call)
-      get_cached_abilities.call(self)
+    elsif Cancannible.get_cached_abilities.respond_to?(:call)
+      Cancannible.get_cached_abilities.call(self)
     end
     return @abilities if @abilities
 
@@ -67,7 +70,7 @@ module Cancannible
       ability_class.new(self)
     end
 
-    store_cached_abilities.call(self,@abilities) if store_cached_abilities.respond_to?(:call)
+    Cancannible.store_cached_abilities.call(self,@abilities) if Cancannible.store_cached_abilities.respond_to?(:call)
     @abilities
   end
 
@@ -79,6 +82,7 @@ module Cancannible
     cancan_ability_object
   end
 
+  # Returns the collection of inherited permission records
   def inherited_permissions
     inherited_perms = []
     self.class.inheritable_permissions.each do |relation|
@@ -89,22 +93,22 @@ module Cancannible
     inherited_perms
   end
 
-  # test for a permission - persisted or dynamic (delegated to CanCan)
+  # Returns true it the +ability+ is permitted on +resource+ - persisted or dynamic (delegated to CanCan)
   def can?(ability, resource)
     abilities.can?(ability, resource)
   end
 
-  # test for a prohibition - persisted or dynamic (delegated to CanCan)
+  # Returns true it the +ability+ is prohibited on +resource+ - persisted or dynamic (delegated to CanCan)
   def cannot?(ability, resource)
     abilities.cannot?(ability, resource)
   end
 
-  # define a persisted permission
+  # Command: grant the permission to do +ability+ on +resource+
   def can(ability, resource)
     permissions << [ability, resource]
   end
 
-  # define a persisted prohibition
+  # Command: prohibit the permission to do +ability+ on +resource+
   def cannot(ability, resource)
     permissions << [ability, resource, false]
   end

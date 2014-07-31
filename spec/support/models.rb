@@ -11,15 +11,15 @@ class Permission < ActiveRecord::Base
 end
 
 class Member < ActiveRecord::Base
-  include Cancannible
+  include Cancannible::Grantee
 end
 
 class User < ActiveRecord::Base
   has_many :roles_users, class_name: 'RolesUsers'
-  has_many :roles, :through => :roles_users
+  has_many :roles, through: :roles_users
   belongs_to :group
 
-  include Cancannible
+  include Cancannible::Grantee
   inherit_permissions_from :roles, :group
 end
 
@@ -30,15 +30,15 @@ end
 
 class Role < ActiveRecord::Base
   has_many :roles_users, :class_name => 'RolesUsers'
-  has_many :users, :through => :roles_users
+  has_many :users, through: :roles_users
 
-  include Cancannible
+  include Cancannible::Grantee
 end
 
 class Group < ActiveRecord::Base
   has_many :users
 
-  include Cancannible
+  include Cancannible::Grantee
 end
 
 class Widget < ActiveRecord::Base

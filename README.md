@@ -34,6 +34,7 @@ Or install it yourself as:
 
     $ gem install cancannible
 
+
 ## Configuration
 
 A generator is provided to create:
@@ -44,13 +45,56 @@ After installing the gem, run the generator:
 
     $ rails generate cancannible:install
 
+
+## Enable Cancannible support in a model
+
+Include Cancannible::Grantee in each model that it will be valid to assign permissions to.
+
+For example, if we have a User model associated with a Group, and both can have permissions assigned:
+
+    class User < ActiveRecord::Base
+      belongs_to :group
+      include Cancannible::Grantee
+    end
+
+    class Group < ActiveRecord::Base
+      has_many :users
+      include Cancannible::Grantee
+    end
+
+
+## Enabling Permissions inheritance
+
+By default, permissions are not inherited from association.
+User the `inherit_permissions_from` class method to declare how permissions can be inherited.
+
+For example:
+
+    class User < ActiveRecord::Base
+      belongs_to :group
+      include Cancannible::Grantee
+      inherit_permissions_from :group
+    end
+
+Or:
+
+    class User < ActiveRecord::Base
+      belongs_to :group
+      has_many :roles_users, class_name: 'RolesUsers'
+      has_many :roles, through: :roles_users
+      include Cancannible::Grantee
+      inherit_permissions_from :group, :roles
+    end
+
+
 ## The Cancannible initialization file
 
 See the initialization file template for specific instructions. Use the initialization file to configure:
 * abilities caching
 * general-purpose access refinements
 
-## Configuring cached abilities storage
+
+### Configuring cached abilities storage
 
 Cancannible does not implement any specific storage mechanism - that is up to you to provide if you wish.
 

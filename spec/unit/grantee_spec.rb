@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Cancannible do
+describe Cancannible::Grantee do
   let(:grantee_class) { Member }
 
   context "without permissions inheritance" do
