@@ -26,8 +26,14 @@ module Cancannible::Grantee
         permission = find_by_asserted_and_ability_and_resource_id_and_resource_type(
           asserted, ability, resource_id, resource_type)
         unless permission
-          permission = find_or_initialize_by_asserted_and_ability_and_resource_id_and_resource_type(
-            !asserted, ability, resource_id, resource_type)
+          # permission = find_or_initialize_by_asserted_and_ability_and_resource_id_and_resource_type(
+          #   !asserted, ability, resource_id, resource_type)
+          permission = find_or_initialize_by(
+            asserted: !asserted,
+            ability: ability,
+            resource_id: resource_id,
+            resource_type: resource_type
+          )
           permission.asserted = asserted
           permission.save!
         end
