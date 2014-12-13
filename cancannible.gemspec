@@ -18,12 +18,13 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "activesupport", "4.2.0.beta2"
-  spec.add_runtime_dependency "activemodel", "~> 4.2.0.beta2"
-  spec.add_runtime_dependency "cancan", "~> 1.6"
+  spec.add_runtime_dependency "activesupport", "4.2.0.rc3"
+  spec.add_runtime_dependency "activemodel", "~> 4.2.0.rc3"
+  # spec.add_runtime_dependency "cancan", "~> 1.6"
+  spec.add_runtime_dependency "cancancan", "~> 1.9"
 
-  spec.add_development_dependency "activerecord", "4.2.0.beta2"
-  spec.add_development_dependency "arel", "6.0.0.beta2"
+  spec.add_development_dependency "activerecord", "4.2.0.rc3"
+  # spec.add_development_dependency "arel", "6.0.0.beta2"
   spec.add_development_dependency "sqlite3", "~> 1.3"
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake", "~> 10.0"
