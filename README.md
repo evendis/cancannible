@@ -7,16 +7,17 @@ Cancannible is a gem that extends CanCan with a range of capabilities:
 * permissions inheritance (so that, for example, a User can inherit permissions from Roles and/or Groups)
 * caching of abilities (so that they don't need to be recalculated on each web request)
 * general-purpose access refinements (so that, for example, CanCan will automatically enforce multi-tenant or other security restrictions)
+* battle-tested with Rails 3.2
+* tested with Rails 4 (but limited experience in the field?)
 
 ## Limitations
-Cancannible's origin was in a web application that's been in production for over 3 years.
+Cancannible's origin was in a web application that's been in production for over 4 years.
 This gem is an initial refactoring as a separate component. It continues to be used in production, but
 there are some limitations and constraints that will ideally be removed or changed over time:
 
 * It only supports ActiveRecord for permissions storage (specifically, it has been tested with PostgreSQL and SQLite)
 * It currently assumes permissions are stored in a Permission model with a specific structure
 * It works with the [CanCan](https://github.com/ryanb/cancan) gem. It has not yet been tested with the new [CanCanCan](https://github.com/CanCanCommunity/cancancan) gem.
-* It assumes and is only tested with Rails 3.2. Not yet with Rails 4.
 * It assumes your CanCan rules are setup with the default `Ability` class
 
 
