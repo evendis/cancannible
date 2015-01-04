@@ -121,6 +121,23 @@ For example, this is a simple scheme using Redis:
     end
 
 
+## Testing the gem
+
+The RSpec test suite runs as the default rake task:
+
+    rake
+    # same as:
+    rake spec
+
+For convenience, guard is included in the development gem environment, so you can start automatic testing-on-change:
+
+    bundle exec guard
+
+[Appraisal](https://github.com/thoughtbot/appraisal) is also included to run tests across Rails 3 and 4 environments:
+
+    appraisal rake spec
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/evendis/cancannible/fork )

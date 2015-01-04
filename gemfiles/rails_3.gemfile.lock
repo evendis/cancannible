@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    cancannible (0.0.2)
+    cancannible (1.0.0)
       activemodel (>= 3.2.1)
       activesupport (>= 3.2.1)
       cancan (~> 1.6)
