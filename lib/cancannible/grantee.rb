@@ -23,21 +23,17 @@ module Cancannible::Grantee
           resource_id = resource.try(:id)
         end
 
-        permission = find_by_asserted_and_ability_and_resource_id_and_resource_type(
-          asserted, ability, resource_id, resource_type)
-        unless permission
-          permission = find_or_initialize_by_asserted_and_ability_and_resource_id_and_resource_type(
-            !asserted, ability, resource_id, resource_type)
+        # This looks ugly, but it avoid version-specific issues with find_by*/find_or_initialize_by* methods
+        permission = where(asserted: asserted, ability: ability, resource_id: resource_id, resource_type: resource_type).first
+        permission ||= where(asserted: !asserted, ability: ability, resource_id: resource_id, resource_type: resource_type).first
+        permission ||= new(asserted: asserted, ability: ability, resource_id: resource_id, resource_type: resource_type)
+        if permission.new_record?
           permission.asserted = asserted
           permission.save!
         end
 
-        # if Rails.version =~ /3\.0/ # the rails 3.0 way
-        #   proxy_owner.instance_variable_set :@permissions, nil # invalidate the owner's permissions collection
-        #   proxy_owner.instance_variable_set :@abilities, nil # invalidate the owner's ability collection
-        # else
-          proxy_association.owner.instance_variable_set :@abilities, nil # invalidate the owner's ability collection
-        # end
+        proxy_association.owner.instance_variable_set :@abilities, nil # invalidate the owner's ability collection
+
         permission
       end
     end
