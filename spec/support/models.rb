@@ -29,7 +29,7 @@ class RolesUsers < ActiveRecord::Base
 end
 
 class Role < ActiveRecord::Base
-  has_many :roles_users, :class_name => 'RolesUsers'
+  has_many :roles_users, class_name: 'RolesUsers'
   has_many :users, through: :roles_users
 
   include Cancannible::Grantee

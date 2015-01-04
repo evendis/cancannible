@@ -24,6 +24,7 @@ Cancannible.setup do |config|
 
 
   # ACCESS REFINMENTS
+  # =================
   # Cancannible allows general-purpose access refinements to be declared here. This will be enforced
   # in addition to any rules defined in you Ability.rb file.
 
