@@ -43,9 +43,13 @@ describe Cancannible::Grantee do
         context "when permission is not asserted" do
           it { should be_truthy }
         end
-        context "when permission is not asserted but can is" do
+        context "when :can already asserted" do
           before { grantee.can(:read, resource) }
           it { should be_falsey }
+          context "and then reset as :cannot" do
+            before { grantee.cannot(:read, resource) }
+            it { should be_truthy }
+          end
         end
         context "when permission is asserted" do
           before { grantee.cannot(:read, resource) }

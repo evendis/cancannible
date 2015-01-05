@@ -27,10 +27,8 @@ module Cancannible::Grantee
         permission = where(asserted: asserted, ability: ability, resource_id: resource_id, resource_type: resource_type).first
         permission ||= where(asserted: !asserted, ability: ability, resource_id: resource_id, resource_type: resource_type).first
         permission ||= new(asserted: asserted, ability: ability, resource_id: resource_id, resource_type: resource_type)
-        if permission.new_record?
-          permission.asserted = asserted
-          permission.save!
-        end
+        permission.asserted = asserted
+        permission.save!
 
         proxy_association.owner.instance_variable_set :@abilities, nil # invalidate the owner's ability collection
 
