@@ -1,14 +1,19 @@
 # Cancannible
 [![Build Status](https://travis-ci.org/evendis/cancannible.svg?branch=master)](https://travis-ci.org/evendis/cancannible)
 
-Cancannible is a gem that extends CanCan with a range of capabilities:
+Cancannible is a gem that extends [CanCan](https://rubygems.org/gems/cancan) with a range of capabilities:
+
 * database-persisted permissions
 * export CanCan methods to the model layer (so that permissions can be applied in model methods, and easily set in a test case)
 * permissions inheritance (so that, for example, a User can inherit permissions from Roles and/or Groups)
 * caching of abilities (so that they don't need to be recalculated on each web request)
 * general-purpose access refinements (so that, for example, CanCan will automatically enforce multi-tenant or other security restrictions)
-* battle-tested with Rails 3.2
-* tested with Rails 4 (but limited experience in the field?)
+* battle-tested with Rails 3.2.x and 4.2.x
+
+Two demo applications are available (with source) that show cancannible in action:
+
+* [cancannibledemo.evendis.com](http://cancannibledemo.evendis.com) uses Rails 3.2.x
+* [cancannibledemo4.evendis.com](http://cancannibledemo4.evendis.com) uses Rails 4.2.x
 
 ## Limitations
 Cancannible's origin was in a web application that's been in production for over 4 years.
