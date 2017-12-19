@@ -18,14 +18,20 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "activesupport", ">= 3.2.1"
-  spec.add_runtime_dependency "activemodel", ">= 3.2.1"
+  spec.add_runtime_dependency "activesupport", ">= 3.2.1", "< 5.0"
+  spec.add_runtime_dependency "activemodel", ">= 3.2.1", "< 5.0"
   spec.add_runtime_dependency "cancan", "~> 1.6"
 
-  spec.add_development_dependency "activerecord", ">= 3.2.1"
+  spec.add_development_dependency "activerecord", ">= 3.2.1", "< 5.0"
   spec.add_development_dependency "sqlite3", "~> 1.3"
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "guard-rspec", "~> 4.0"
+  spec.add_development_dependency "rspec", "~> 3.2"
+  spec.add_development_dependency "appraisal"
+
+  # guard versions are pegged to avoid issue with ruby_dep requires Ruby version >= 2.2.5, ~> 2.2.
+  spec.add_development_dependency "guard-rspec", "4.6.4"
+  spec.add_development_dependency "rb-fsevent", "0.9.6"
+  spec.add_development_dependency "rb-inotify", "0.9.5"
+  spec.add_development_dependency "pry-coolline", "0.2.5" # avoid readline dependency
 end

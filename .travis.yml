@@ -1,14 +1,9 @@
 # These are specific configuration settings required for travis-ci
 language: ruby
+before_script: "bundle exec rake appraisal:install"
+script: "bundle exec rake appraisal"
 rvm:
   - 1.9.3
-  - 2.1.5
-gemfile:
-  - gemfiles/rails_3.gemfile
-  - gemfiles/rails_4.gemfile
-matrix:
-  exclude:
-    - rvm: 1.9.3
-      gemfile: gemfiles/rails_4.gemfile
-    - rvm: 2.1.5
-      gemfile: gemfiles/rails_3.gemfile
+  - 2.1.9
+notifications:
+  email: false
