@@ -5,7 +5,7 @@ appraise "rails-3" do
 end
 
 appraise "rails-4" do
-  gem "activesupport", '> 4'
-  gem "activemodel", '> 4'
-  gem "activerecord", '> 4'
+  gem "activesupport", '~> 4.0'
+  gem "activemodel", '~> 4.0'
+  gem "activerecord", '~> 4.0'
 end
