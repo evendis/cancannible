@@ -106,11 +106,16 @@ module Cancannible
   # This module is automatically included into all controllers.
   # It overrides some CanCan ControllerAdditions
   module ControllerAdditions
+    # Returns abilities cached in the current_user model.
+    # If that fails, returns a default Ability instance
     def current_ability
-      current_user.try(:abilities)
+      current_user.try(:abilities) || if ability_class = ('::Ability'.constantize rescue nil)
+        ability_class.new(current_user)
+      end
     end
   end
 end
+
 
 if defined? ActionController::Base
   ActionController::Base.class_eval do
