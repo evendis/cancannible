@@ -1,7 +1,7 @@
 # Cancannible
 [![Build Status](https://travis-ci.org/evendis/cancannible.svg?branch=master)](https://travis-ci.org/evendis/cancannible)
 
-Cancannible is a gem that extends [CanCan](https://rubygems.org/gems/cancan) with a range of capabilities:
+Cancannible is a gem that extends [CanCanCan](https://github.com/CanCanCommunity/cancancan) with a range of capabilities:
 
 * database-persisted permissions
 * export CanCan methods to the model layer (so that permissions can be applied in model methods, and easily set in a test case)
@@ -16,13 +16,14 @@ Two demo applications are available (with source) that show cancannible in actio
 * [cancannibledemo4.evendis.com](http://cancannibledemo4.evendis.com) uses Rails 4.2.x
 
 ## Limitations
+
 Cancannible's origin was in a web application that's been in production for over 4 years.
 This gem is an initial refactoring as a separate component. It continues to be used in production, but
 there are some limitations and constraints that will ideally be removed or changed over time:
 
 * It only supports ActiveRecord for permissions storage (specifically, it has been tested with PostgreSQL and SQLite)
 * It currently assumes permissions are stored in a Permission model with a specific structure
-* It works with the [CanCan](https://github.com/ryanb/cancan) gem. It has not yet been tested with the new [CanCanCan](https://github.com/CanCanCommunity/cancancan) gem.
+* It works with the [CanCanCan](https://github.com/CanCanCommunity/cancancan) gem.
 * It assumes your CanCan rules are setup with the default `Ability` class
 
 

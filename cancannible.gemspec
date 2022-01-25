@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "activesupport", "~> 6.1"
   spec.add_runtime_dependency "activemodel", "~> 6.1"
-  spec.add_runtime_dependency "cancan", "~> 1.6"
+  spec.add_runtime_dependency "cancancan"
 
   spec.add_development_dependency "activerecord", "~> 6.1"
   spec.add_development_dependency "sqlite3", ">= 1.3.2"
