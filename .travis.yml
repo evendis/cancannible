@@ -1,9 +1,6 @@
 # These are specific configuration settings required for travis-ci
 language: ruby
-before_script: "bundle exec rake appraisal:install"
-script: "bundle exec rake appraisal"
 rvm:
-  - 1.9.3
-  - 2.1.9
+  - 2.7.2
 notifications:
   email: false
