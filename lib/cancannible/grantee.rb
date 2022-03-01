@@ -50,7 +50,13 @@ module Cancannible::Grantee
     @abilities = if refresh
       nil
     elsif Cancannible.get_cached_abilities.respond_to?(:call)
-      Cancannible.get_cached_abilities.call(self)
+      result = Cancannible.get_cached_abilities.call(self)
+      if result
+        # performs a crude compatibility check
+        rules_size = result.send(:rules).size rescue nil
+        rules_index_size = (result.instance_variable_get(:@rules_index) || []).size
+        result if !rules_size.nil? && rules_index_size == rules_size
+      end
     end
     return @abilities if @abilities
 
@@ -61,7 +67,7 @@ module Cancannible::Grantee
       ability_class.new(self)
     end
 
-    Cancannible.store_cached_abilities.call(self,@abilities) if Cancannible.store_cached_abilities.respond_to?(:call)
+    Cancannible.store_cached_abilities.call(self, @abilities) if Cancannible.store_cached_abilities.respond_to?(:call)
     @abilities
   end
 
