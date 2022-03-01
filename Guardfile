@@ -3,6 +3,6 @@
 
 guard :rspec, cmd: 'bundle exec rspec', all_on_start: false, all_after_pass: false do
   watch(%r{^spec/.+_spec\.rb$})
-  watch(%r{^lib/flattery/(.+)\.rb$})   { |m| "spec/unit/#{m[1]}_spec.rb" }
+  watch(%r{^lib/cancannible/(.+)\.rb$})   { |m| "spec/unit/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
 end
