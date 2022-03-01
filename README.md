@@ -1,5 +1,4 @@
 # Cancannible
-[![Build Status](https://travis-ci.org/evendis/cancannible.svg?branch=master)](https://travis-ci.org/evendis/cancannible)
 
 Cancannible is a gem that extends [CanCanCan](https://github.com/CanCanCommunity/cancancan) with a range of capabilities:
 
