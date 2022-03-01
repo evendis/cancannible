@@ -1,19 +1,19 @@
 class Cancannible::Preloader
-
-  def self.preload_abilities!(grantee,cancan_ability_object)
-    new(grantee,cancan_ability_object).preload!
+  def self.preload_abilities!(grantee, cancan_ability_object)
+    new(grantee, cancan_ability_object).preload!
   end
 
   attr_accessor :grantee
   attr_accessor :cancan_ability_object
 
-  def initialize(grantee,cancan_ability_object)
+  def initialize(grantee, cancan_ability_object)
     self.grantee = grantee
     self.cancan_ability_object = cancan_ability_object
   end
 
   def preload!
     return unless grantee.respond_to?(:inherited_permissions)
+
     # load inherited permissions to CanCan Abilities
     preload_abilities_from_permissions(grantee.inherited_permissions)
     # load user-based permissions from database to CanCan Abilities
@@ -39,17 +39,15 @@ class Cancannible::Preloader
       end
 
       if permission.resource_id.nil?
-
         if action == :cannot
           # apply generic unrestricted permission to the class
-          cancan_ability_object.send( action, ability, resource_type )
+          cancan_ability_object.send(action, ability, resource_type)
         else
-
           refinements = resolve_resource_refinements(ability,model_resource)
 
           if refinements.empty?
             # apply generic unrestricted permission to the class
-            cancan_ability_object.send( action, ability, resource_type )
+            cancan_ability_object.send(action, ability, resource_type)
           else
             secondary_refinements = resolve_resource_refinements(ability,model_resource,2).presence || [{}]
             refinements.each do |refinement|
@@ -58,25 +56,22 @@ class Cancannible::Preloader
               end
             end
           end
-
         end
-
       elsif resource_type.find_by_id(permission.resource_id)
         cancan_ability_object.send( action,  ability, resource_type, id: permission.resource_id)
       end
-
     end
   end
 
   def resolve_resource_type(given_resource_type)
     model_resource = nil
     resource_type = given_resource_type
-    resource_type = resource_type==resource_type.downcase ? resource_type.to_sym : resource_type.constantize rescue nil
+    resource_type = resource_type == resource_type.downcase ? resource_type.to_sym : resource_type.constantize rescue nil
     model_resource = resource_type.respond_to?(:new) ? resource_type.new : resource_type rescue nil
     [resource_type,model_resource]
   end
 
-  def resolve_resource_refinements(ability,model_resource,stage=1)
+  def resolve_resource_refinements(ability, model_resource, stage=1)
     Array(Cancannible.refinements[stage-1]).each_with_object([]) do |refinement,memo|
       refinement_attributes = refinement.dup
 
@@ -111,5 +106,4 @@ class Cancannible::Preloader
       memo.push(restriction) if restriction.present?
     end
   end
-
 end

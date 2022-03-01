@@ -1,5 +1,4 @@
 module MigrationsHelper
-
   def run_migrations
     ActiveRecord::Base.establish_connection({
         adapter:   'sqlite3',
@@ -8,7 +7,6 @@ module MigrationsHelper
 
     ActiveRecord::Migration.suppress_messages do
       ActiveRecord::Schema.define(:version => 0) do
-
         create_table "members", :force => true do |t|
           t.string   "name"
           t.string   "email"
@@ -49,11 +47,9 @@ module MigrationsHelper
           t.string   "name"
           t.integer  "category_id"
         end
-
       end
     end
   end
-
 end
 
 RSpec.configure do |conf|

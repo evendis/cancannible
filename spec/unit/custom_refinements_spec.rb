@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-
 describe Cancannible do
   let(:grantee_class) { User }
   let(:ability) { :blow }
@@ -9,7 +8,6 @@ describe Cancannible do
   subject(:grantee) { grantee_class.create!(username: username) }
 
   describe "#can?" do
-
     context "with custom attribute association restriction" do
       let(:resource_class) { Widget }
       before do
@@ -245,7 +243,5 @@ describe Cancannible do
         it { should be_falsey }
       end
     end
-
   end
-
 end

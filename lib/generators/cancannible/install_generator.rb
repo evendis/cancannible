@@ -34,6 +34,5 @@ module Cancannible
         end
       end
     end
-
   end
 end

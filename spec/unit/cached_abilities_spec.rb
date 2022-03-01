@@ -60,8 +60,5 @@ describe Cancannible do
         expect(grantee.abilities[:ability]).to be_an(Ability)
       end
     end
-
-
   end
-
 end

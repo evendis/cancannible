@@ -1,11 +1,9 @@
 require 'spec_helper'
 
-
 describe Cancannible do
   let(:grantee_class) { User }
 
   context "with mulitple sources of permissions inheritance" do
-
     describe "##inheritable_permissions" do
       subject { grantee_class.inheritable_permissions }
       it { should eql([:roles, :group]) }
@@ -15,12 +13,12 @@ describe Cancannible do
     let!(:role_b)  { Role.create! }
     let!(:group_a) { Group.create! }
     let!(:group_b) { Group.create! }
-    subject(:grantee) {
+    subject(:grantee) do
       u = grantee_class.new(group: group_a)
       u.roles << role_a
       u.save!
       u
-    }
+    end
 
     context "with a symbolic resource" do
       let!(:resource) { :something }
@@ -43,9 +41,7 @@ describe Cancannible do
           it { should be_truthy }
         end
       end
-
     end
-
 
     context "with a resource class" do
       let!(:resource) { Widget }
@@ -68,7 +64,6 @@ describe Cancannible do
           it { should be_truthy }
         end
       end
-
     end
 
     context "with a resource instance" do
@@ -136,10 +131,6 @@ describe Cancannible do
           it { should be_truthy }
         end
       end
-
-
     end
-
   end
-
 end

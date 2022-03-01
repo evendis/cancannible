@@ -1,5 +1,4 @@
 module Cancannible
-
   mattr_accessor :refinements
   mattr_accessor :get_cached_abilities
   mattr_accessor :store_cached_abilities
@@ -24,5 +23,4 @@ module Cancannible
     self.refinements[stage] ||= []
     self.refinements[stage] << refinement
   end
-
 end

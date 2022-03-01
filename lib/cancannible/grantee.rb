@@ -35,16 +35,13 @@ module Cancannible::Grantee
         permission
       end
     end
-
   end
 
   module ClassMethods
-
     # Command: configures the set of associations (array of symbols) from which permissions should be inherited
     def inherit_permissions_from(*relations)
       self.inheritable_permissions = relations
     end
-
   end
 
   # Returns the Ability set for the owner.
@@ -98,9 +95,7 @@ module Cancannible::Grantee
   def cannot(ability, resource)
     permissions << [ability, resource, false]
   end
-
 end
-
 
 module Cancannible
   # This module is automatically included into all controllers.
@@ -115,7 +110,6 @@ module Cancannible
     end
   end
 end
-
 
 if defined? ActionController::Base
   ActionController::Base.class_eval do

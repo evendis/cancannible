@@ -1,5 +1,4 @@
 Cancannible.setup do |config|
-
   # ABILITY CACHING
   # ===============
   # Cancannible supports optional ability caching. This can provide a significant performance
@@ -100,5 +99,4 @@ Cancannible.setup do |config|
   #
   # By default, access refinements are "stage 1" i.e. applied directly to the permissions being loaded.
   # By specifying stage 2, this refinement is applied on top of all stage 1 refinements (if possible / applicable)
-
 end

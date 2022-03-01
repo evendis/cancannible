@@ -4,7 +4,6 @@ describe Cancannible::Grantee do
   let(:grantee_class) { Member }
 
   context "without permissions inheritance" do
-
     describe "##inheritable_permissions" do
       subject { grantee_class.inheritable_permissions }
       it { should be_empty }

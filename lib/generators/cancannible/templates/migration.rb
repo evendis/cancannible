@@ -1,4 +1,4 @@
-class CreateCancanniblePermissions < ActiveRecord::Migration
+class CreateCancanniblePermissions < ActiveRecord::Migration[6.1]
   def change
     create_table :permissions, force: true do |table|
       table.integer  :permissible_id
