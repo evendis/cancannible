@@ -1,6 +1,6 @@
 require 'active_support'
 require 'active_support/core_ext'
-require 'cancan'
+require 'cancancan'
 
 require 'cancannible/version'
 require 'cancannible/config'
