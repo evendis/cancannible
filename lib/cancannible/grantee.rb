@@ -51,12 +51,9 @@ module Cancannible::Grantee
       nil
     elsif Cancannible.get_cached_abilities.respond_to?(:call)
       result = Cancannible.get_cached_abilities.call(self)
-      if result
-        # performs a crude compatibility check
-        rules_size = result.send(:rules).size rescue nil
-        rules_index_size = (result.instance_variable_get(:@rules_index) || []).size
-        result if !rules_size.nil? && rules_index_size == rules_size
-      end
+      # performs a crude compatibility check: cancan rules won't have a @rules_index
+      # (neither will an empty ability object, but we ignore this case)
+      result unless result && !result.instance_variable_defined?(:@rules_index)
     end
     return @abilities if @abilities
 
